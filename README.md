@@ -1,3 +1,3 @@
-# Getting Started with Create React App
+# React Blog App
 
 This is a Simple blog app created in React.
