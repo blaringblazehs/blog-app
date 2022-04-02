@@ -1,33 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BlogList from "./BlogList";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import db from "./firebase";
 
 const Home = () => {
-    const [blogs, setBlogs] = useState([
-        {
-            title: "My new Website",
-            body: "loperius ios lsllf s..",
-            author: "myself",
-            id: 1,
-        },
-        {
-            title: "Welcome to my site",
-            body: "loperius ios lsllf s..",
-            author: "John",
-            id: 2,
-        },
-        {
-            title: "A New blog",
-            body: "loperius ios lsllf s..",
-            author: "Myself",
-            id: 3,
-        },
-    ]);
+    const [blogs, setBlogs] = useState([]);
+    const blogRef = collection(db, "blogs");
+    // const [blogs, setBlogs] = useState([
+    //     {
+    //         title: "My new Website",
+    //         body: "loperius ios lsllf s..",
+    //         author: "myself",
+    //         id: 1,
+    //     },
+    //     {
+    //         title: "Welcome to my site",
+    //         body: "loperius ios lsllf s..",
+    //         author: "John",
+    //         id: 2,
+    //     },
+    // ]);
+
+    useEffect(() => {
+        getDocs(blogRef)
+            .then((res) => {
+                const blogs = res.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                setBlogs(blogs);
+            })
+            .catch((err) => console.log(err.message));
+    }, []);
+
+    const handleDelete = (id) => {
+        const newBlogs = blogs.filter((blog) => blog.id !== id);
+        setBlogs(newBlogs);
+    };
     return (
         <div className="home">
-            <BlogList blogs={blogs} title="All Blogs" />
+            {console.log("Home blogs", blogs)}
             <BlogList
-                blogs={blogs.filter((blog) => blog.author === "myself")}
-                title="My Blogs"
+                blogs={blogs}
+                title="All Blogs"
+                handleDelete={handleDelete}
             />
         </div>
     );
