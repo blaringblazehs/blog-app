@@ -8,7 +8,7 @@ const BlogList = (props) => {
     return (
         <div className="blog-list">
             {isPending && <h2>{title}</h2>}
-            {/* {console.log("My Blogs- ", blogs)} */}
+            {/* {console.log("My Blogs id - ", blogs.id)} */}
             {blogs.map((blog) => (
                 <div className="blog-preview" key={blog.id}>
                     <Link to={`/blog/${blog.id}`}>
@@ -16,9 +16,10 @@ const BlogList = (props) => {
                         <p>Written by - {blog.data.author}</p>
                     </Link>
 
-                    {/* <button onClick={() => handleDelete(blog.id)}>
-                        delete blog
-                    </button> */}
+                    <button onClick={() => handleDelete(blog.id)}>
+                        {/* {console.log(blog.id)} */}
+                        delete
+                    </button>
                 </div>
             ))}
         </div>

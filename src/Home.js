@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import BlogList from "./BlogList";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import {
+    addDoc,
+    collection,
+    getDocs,
+    deleteDoc,
+    doc,
+} from "firebase/firestore";
 import db from "./firebase";
 
 const Home = () => {
@@ -38,7 +44,14 @@ const Home = () => {
 
     const handleDelete = (id) => {
         const newBlogs = blogs.filter((blog) => blog.id !== id);
-        setBlogs(newBlogs);
+
+        // setBlogs(newBlogs);
+        console.log("Delete Blog id - ", id);
+        //delete the document from firebase
+        const docRef = doc(db, "blogs", id);
+        deleteDoc(docRef).then(() => {
+            setBlogs(newBlogs);
+        });
     };
     return (
         <div className="content">
