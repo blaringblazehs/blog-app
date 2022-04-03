@@ -5,6 +5,7 @@ import db from "./firebase";
 
 const Home = () => {
     const [blogs, setBlogs] = useState([]);
+    const [isPending, setIsPending] = useState(true);
     const blogRef = collection(db, "blogs");
     // const [blogs, setBlogs] = useState([
     //     {
@@ -30,6 +31,7 @@ const Home = () => {
                 }));
 
                 setBlogs(blogs);
+                setIsPending(false);
             })
             .catch((err) => console.log(err.message));
     }, []);
@@ -39,13 +41,17 @@ const Home = () => {
         setBlogs(newBlogs);
     };
     return (
-        <div className="home">
+        <div className="content">
             {console.log("Home blogs", blogs)}
-            <BlogList
-                blogs={blogs}
-                title="All Blogs"
-                handleDelete={handleDelete}
-            />
+            {isPending && <div>Loading...</div>}
+            {blogs && (
+                <BlogList
+                    blogs={blogs}
+                    title="All Blogs"
+                    isPending={isPending}
+                    handleDelete={handleDelete}
+                />
+            )}
         </div>
     );
 };
